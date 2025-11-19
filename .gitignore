@@ -46,3 +46,5 @@ vgcore.*
 
 # Logs
 *.log
+decoded
+encoded
