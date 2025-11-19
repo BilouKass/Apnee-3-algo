@@ -1,1 +1,1 @@
-batiste WHY ARE YOU GAY ?
+WHY ARE YOU GAY ?
