@@ -74,13 +74,13 @@ void constru(Arbre huff, int prof, char tab[])
             printf("%c",tab[i]);
             HuffmanCode[huff->etiq].code[i] = tab[i];
         }
-        printf("\n");
+        printf(" %c\n", huff->etiq);
         HuffmanCode[huff->etiq].lg = prof;
         return;
     }
-    tab[prof] = '0';
+    tab[prof] = 0;
     constru(huff->fg, prof+1, tab);
-    tab[prof] = '1';
+    tab[prof] = 1;
     constru(huff->fd, prof+1, tab);
 }
 
@@ -105,7 +105,19 @@ void ConstruireCode(Arbre huff) {
 
 void Encoder(FILE *fic_in, FILE *fic_out, Arbre ArbreHuffman) {
     /* A COMPLETER */
-    printf("Programme non realise (Encoder)\n");
+    BFILE *bf = bstart(fic_out,"w");
+    int c;
+    c = fgetc(fic_in);
+    while (c != EOF) {
+        for (int i = HuffmanCode[c].lg - 1; i >= 0;  i--) {
+            printf("%d", HuffmanCode[c].code[i]);
+            bitwrite(bf, HuffmanCode[c].code[i]);
+        }
+
+        c = fgetc(fic_in);
+    };
+    printf("\n");
+    bstop(bf);
 }
 
 int main(int argc, char *argv[]) {
