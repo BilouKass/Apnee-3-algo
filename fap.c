@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-fap creer_fap_vide() { return NULL; }
+fap creer_fap_vide() { 
+    return NULL ;
+    }
+
 
 fap inserer(fap f, Arbre element, int priorite) {
     fap nouveau, courant, precedent;
