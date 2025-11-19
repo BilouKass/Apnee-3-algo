@@ -156,15 +156,15 @@ Arbre LireArbre(FILE *fichier) {
     racine = 0;
     fread(&entierlu, sizeof(int), 1, fichier);
     while (entierlu != 511) {
-#ifdef DEBUG_ARBRE
+/*#ifdef DEBUG_ARBRE
         fprintf(stderr,"entier lu : %d\n", entierlu);
-#endif
+#endif*/
         fread(&fg, sizeof(int), 1, fichier);
         fread(&fd, sizeof(int), 1, fichier);
-#ifdef DEBUG_ARBRE
+/*#ifdef DEBUG_ARBRE
         fprintf(stderr,"fg : %d\n", fg);
         fprintf(stderr,"fd : %d\n", fd);
-#endif
+#endif*/
         /* Assertion : TabArbre[fg] et TabArbre[fd] ont ete affectes,
            eventuellement a l'arbre vide si fg=511 ou fd=511 */
         if (fg == 511) {

@@ -27,7 +27,6 @@ int main(int argc, char *argv[]) {
     FILE *fichier_decode = fopen(argv[2], "w");
 
     Arbre ArbreHuffman = LireArbre(fichier_encode);
-    AfficherArbre(ArbreHuffman);
     Decoder(fichier_encode, fichier_decode, ArbreHuffman);
 
     fclose(fichier_encode);

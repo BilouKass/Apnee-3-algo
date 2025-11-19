@@ -98,7 +98,6 @@ void ConstruireCode(Arbre huff) {
         //printf("%c,%d,%s\n", i, HuffmanCode[i].lg, HuffmanCode[i].code);
     }
 
-    printf("Programme non realise (ConstruireCode)\n");
 }
 
 
