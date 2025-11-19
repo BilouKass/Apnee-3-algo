@@ -1,2 +1,48 @@
+# Fichiers objets
 *.o
-*.
+*.a
+*.so
+*.dylib
+
+# Exécutables
+*.exe
+*.out
+a.out
+huff_encode
+huff_decode
+test_*
+
+# Fichiers de compilation
+*.d
+*.dep
+
+# Fichiers générés
+*.bin
+*.dat
+*.tmp
+pipi
+popo
+
+# Fichiers de débogage
+*.dSYM/
+*.su
+*.idb
+*.pdb
+core
+vgcore.*
+
+# Fichiers d'éditeur/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Logs
+*.log
