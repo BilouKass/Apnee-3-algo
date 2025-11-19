@@ -105,11 +105,12 @@ void ConstruireCode(Arbre huff) {
 
 void Encoder(FILE *fic_in, FILE *fic_out, Arbre ArbreHuffman) {
     /* A COMPLETER */
+    EcrireArbre(fic_out, ArbreHuffman);
     BFILE *bf = bstart(fic_out,"w");
     int c;
     c = fgetc(fic_in);
     while (c != EOF) {
-        for (int i = HuffmanCode[c].lg - 1; i >= 0;  i--) {
+        for (int i = 0; i < HuffmanCode[c].lg ;  i++) {
             printf("%d", HuffmanCode[c].code[i]);
             bitwrite(bf, HuffmanCode[c].code[i]);
         }
