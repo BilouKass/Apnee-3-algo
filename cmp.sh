@@ -31,7 +31,7 @@ for fichier_original in "$@"; do
 
     # Compression
     echo "Compression de '$fichier_original'..."
-    ./huff_encode "$fichier_original" "$fichier_compresse" &> /dev/null
+    ./huff_encode "$fichier_original" "$fichier_compresse" #&> /dev/null
     if [ $? -ne 0 ]; then
         echo "✗ Erreur lors de la compression de '$fichier_original'"
         echo ""
