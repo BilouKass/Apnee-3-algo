@@ -5,6 +5,7 @@
 #include "huffman_code.h"
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct
 {
@@ -22,6 +23,10 @@ void ConstruireTableOcc(FILE *fichier, TableOcc_t *TableOcc)
         TableOcc->tab[i] = 0;
     }
     c = fgetc(fichier);
+    if (c == EOF) {
+        printf("Fichier vide, rien a compresser\n");
+        exit(1);
+    }
     while (c != EOF)
     {
         TableOcc->tab[c] += 1;
@@ -50,7 +55,10 @@ fap InitHuffman(TableOcc_t *TableOcc)
     }
     return F;
 }
-
+int estSingleton(fap f) { //verifie si la fap n'a aucun élément (eventuellement bouger dans fap.h)
+    //ou faire un defapage puis refaper (perte de l'ordre ?)
+    return f->prochain == NULL;
+}
 Arbre ConstruireArbre(fap file)
 {
     /* A COMPLETER */
@@ -59,21 +67,18 @@ Arbre ConstruireArbre(fap file)
     Arbre Z;
     int prioA;
     int prioB;
-    while (1)
-    {
+    while (!estSingleton(file)) {
         file = extraire(file, &A, &prioA);
-        printf("A = %c\n", A->etiq);
+        //printf("A = %c\n", A->etiq);
         file = extraire(file, &B, &prioB);
         // printf("B = %c\n", B->etiq);
 
         Z = NouveauNoeud(A, -1, B);
-        printf("Z = %c\n", Z->etiq);
-
-        if (est_fap_vide(file)) // il ne reste plus rien → Z est la racine
-            return Z;
-
+        //printf("Z = %c\n", Z->etiq);
         file = inserer(file, Z, prioA + prioB);
     }
+    file = extraire(file, &A, &prioA);
+    return A;
 }
 
 void constru(Arbre huff, int prof, char tab[])
@@ -102,12 +107,17 @@ void ConstruireCode(Arbre huff)
     int prof = 0;
     if (huff != NULL)
     {
-        constru(huff, prof, tab);
+        // cas arbre feuille
+        if (huff->etiq != -1) {
+            HuffmanCode[huff->etiq].lg = 1; //set longueur = 1 
+        } else {
+            constru(huff, prof, tab);
+        }
     }
     for (int i = 0; i < 256; i++)
     {
 
-        // printf("%c,%d,%s\n", i, HuffmanCode[i].lg, HuffmanCode[i].code);
+        //printf("%c,%d,%d\n", i, HuffmanCode[i].lg, HuffmanCode[i].code[0]);
     }
 }
 
@@ -118,15 +128,12 @@ void Encoder(FILE *fic_in, FILE *fic_out, Arbre ArbreHuffman)
     BFILE *bf = bstart(fic_out, "w");
     int c;
     c = fgetc(fic_in);
-    printf("encoder c = %c\n", c);
-    while (c != EOF)
-    {
-        for (int i = 0; i < HuffmanCode[c].lg; i++)
-        {
-            // printf("%d", HuffmanCode[c].code[i]);
+    while (c != EOF) {
+        //printf("encoder c = %c\n", c);
+        for (int i = 0; i < HuffmanCode[c].lg; i++) {
+            //printf("%d", HuffmanCode[c].code[i]);
             bitwrite(bf, HuffmanCode[c].code[i]);
         }
-
         c = fgetc(fic_in);
     };
     // printf("\n");

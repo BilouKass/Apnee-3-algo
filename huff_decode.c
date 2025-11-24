@@ -5,20 +5,30 @@
 #include "bfile.h"
 
 void Decoder(FILE *fichier_encode, FILE *fichier_decode, Arbre ArbreHuffman) {
-    BFILE *Benc =bstart(fichier_encode, "r");
-    int c = bitread(Benc);
+    BFILE *Benc = bstart(fichier_encode, "r");
+
     Arbre current = ArbreHuffman;
     while (!beof(Benc)) {
+        int c = bitread(Benc);
+        if (c == EOF) break;
+        
         if (c == 0) {
-            current = FilsGauche(current);
+            if (EstVide(FilsGauche(current))) { //cas singleton
+                fputc(current->etiq, fichier_decode);
+                current = ArbreHuffman;
+                continue;
+            } else {
+                current = FilsGauche(current);
+            }
         } else {
             current = FilsDroit(current);
         }
+        
+        // Si on arrive sur une feuille, écrire le caractère et repartir de la racine
         if (EstVide(FilsGauche(current)) && EstVide(FilsDroit(current))) {
             fputc(current->etiq, fichier_decode);
             current = ArbreHuffman;
         }
-        c = bitread(Benc);
     }
 }
 

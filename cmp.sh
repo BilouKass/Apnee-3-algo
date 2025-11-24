@@ -31,7 +31,7 @@ for fichier_original in "$@"; do
 
     # Compression
     echo "Compression de '$fichier_original'..."
-    ./huff_encode "$fichier_original" "$fichier_compresse" #&> /dev/null
+    ./huff_encode "$fichier_original" "$fichier_compresse" &> /dev/null
     if [ $? -ne 0 ]; then
         echo "✗ Erreur lors de la compression de '$fichier_original'"
         echo ""
@@ -78,6 +78,7 @@ for fichier_original in "$@"; do
         echo "✓ Décompression réussie : fichiers identiques"
     else
         echo "✗ ERREUR : Le fichier décompressé diffère de l'original !"
+        $fichier_decompresse < "ERREUR DE DECOMPRESSION"
     fi
     
     echo ""
