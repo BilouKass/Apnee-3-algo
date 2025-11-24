@@ -108,8 +108,9 @@ void ConstruireCode(Arbre huff)
     if (huff != NULL)
     {
         // cas arbre feuille
-        if (huff->etiq != -1) {
-            HuffmanCode[huff->etiq].lg = 1; //set longueur = 1 
+        if (huff->fg == NULL && huff->fd == NULL) {
+            HuffmanCode[huff->etiq].code[0] = 0;
+            HuffmanCode[huff->etiq].lg = 1;
         } else {
             constru(huff, prof, tab);
         }
