@@ -57,9 +57,13 @@ for fichier_original in "$@"; do
         ratio=$(echo "scale=4; $taille_compresse / $taille_original * 100" | bc)
         gain=$(echo "scale=2; 100 - $ratio" | bc)
     else
-        echo "⚠ Fichier original vide, ignoré."
+        echo "⚠ Fichier original vide, rien à décompresser"
+        taille_original=0
+        taille_compresse=0
+        taille_decompresse=0
+        ratio=0
+        gain=0
         echo ""
-        continue
     fi
 
     # Vérification de l'intégrité
