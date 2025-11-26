@@ -22,7 +22,7 @@ void ConstruireTableOcc(FILE *fichier, TableOcc_t *TableOcc)
     {
         TableOcc->tab[i] = 0;
     }
-
+    c = fgetc(fichier);
     while (c != EOF)
     {
         TableOcc->tab[c] += 1;
@@ -147,12 +147,13 @@ int main(int argc, char *argv[])
     fichier = fopen(argv[1], "r");
 
     char c = fgetc(fichier);
-    if (c == EOF) {
+    if (feof(fichier)) {
         printf("Fichier vide, rien a compresser\n");
         fclose(fopen(argv[2], "w"));
 
         exit(0);
     }
+    ungetc(c, fichier);
     /* Construire la table d'occurences */
     ConstruireTableOcc(fichier, &TableOcc);
     fclose(fichier);

@@ -32,7 +32,7 @@ void Decoder(FILE *fichier_encode, FILE *fichier_decode, Arbre ArbreHuffman) {
 }
 
 int main(int argc, char *argv[]) {
-    FILE *fichier_encode = fopen(argv[1], "r");
+    FILE *fichier_encode = fopen(argv[1], "rb");
     FILE *fichier_decode = fopen(argv[2], "w");
     int c = fgetc(fichier_encode);
     if (c == EOF) {
