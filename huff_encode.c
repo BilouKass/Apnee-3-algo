@@ -28,18 +28,10 @@ void ConstruireTableOcc(FILE *fichier, TableOcc_t *TableOcc)
         TableOcc->tab[c] += 1;
         c = fgetc(fichier);
     };
-    // int i;
-    // for (i = 0; i < 256; i++)
-    //{
-    //     if (TableOcc->tab[i] != 0)
-    //         printf("Occurences du caractere %c (code %d) : %d\n", i, i,
-    //                TableOcc->tab[i]);
-    // }
 }
 
 fap InitHuffman(TableOcc_t *TableOcc)
 {
-    /* A COMPLETER */
     fap F = creer_fap_vide();
     for (int i = 0; i < 256; i++)
     {
@@ -51,26 +43,23 @@ fap InitHuffman(TableOcc_t *TableOcc)
     }
     return F;
 }
-int estSingleton(fap f) { //verifie si la fap n'a aucun élément (eventuellement bouger dans fap.h)
-    //ou faire un defapage puis refaper (perte de l'ordre ?)
+int estSingleton(fap f)
+{ // verifie si la fap n'a aucun élément
     return f->prochain == NULL;
 }
 Arbre ConstruireArbre(fap file)
 {
-    /* A COMPLETER */
     Arbre A;
     Arbre B;
     Arbre Z;
     int prioA;
     int prioB;
-    while (!estSingleton(file)) {
+    while (!estSingleton(file))
+    {
         file = extraire(file, &A, &prioA);
-        //printf("A = %c\n", A->etiq);
         file = extraire(file, &B, &prioB);
-        // printf("B = %c\n", B->etiq);
 
         Z = NouveauNoeud(A, -1, B);
-        //printf("Z = %c\n", Z->etiq);
         file = inserer(file, Z, prioA + prioB);
     }
     file = extraire(file, &A, &prioA);
@@ -78,16 +67,14 @@ Arbre ConstruireArbre(fap file)
 }
 
 void constru(Arbre huff, int prof, char tab[])
-{ // T BON AU BOWLING ?
+{
     if (huff->fg == NULL && huff->fd == NULL)
     {
         tab[prof] = '\0';
         for (int i = 0; i < prof; i++)
         {
-            // printf("%c", tab[i]);
             HuffmanCode[huff->etiq].code[i] = tab[i];
         }
-        // printf(" %c\n", huff->etiq);
         HuffmanCode[huff->etiq].lg = prof;
         return;
     }
@@ -103,37 +90,32 @@ void ConstruireCode(Arbre huff)
     int prof = 0;
     if (huff != NULL)
     {
-        // cas arbre feuille
-        if (huff->fg == NULL && huff->fd == NULL) {
+        if (huff->fg == NULL && huff->fd == NULL)
+        {
             HuffmanCode[huff->etiq].code[0] = 0;
             HuffmanCode[huff->etiq].lg = 1;
-        } else {
+        }
+        else
+        {
             constru(huff, prof, tab);
         }
-    }
-    for (int i = 0; i < 256; i++)
-    {
-
-        //printf("%c,%d,%d\n", i, HuffmanCode[i].lg, HuffmanCode[i].code[0]);
     }
 }
 
 void Encoder(FILE *fic_in, FILE *fic_out, Arbre ArbreHuffman)
 {
-    /* A COMPLETER */
     EcrireArbre(fic_out, ArbreHuffman);
     BFILE *bf = bstart(fic_out, "w");
     int c;
     c = fgetc(fic_in);
-    while (c != EOF) {
-        //printf("encoder c = %c\n", c);
-        for (int i = 0; i < HuffmanCode[c].lg; i++) {
-            //printf("%d", HuffmanCode[c].code[i]);
+    while (c != EOF)
+    {
+        for (int i = 0; i < HuffmanCode[c].lg; i++)
+        {
             bitwrite(bf, HuffmanCode[c].code[i]);
         }
         c = fgetc(fic_in);
     };
-    // printf("\n");
     bstop(bf);
 }
 
@@ -147,7 +129,8 @@ int main(int argc, char *argv[])
     fichier = fopen(argv[1], "r");
 
     char c = fgetc(fichier);
-    if (feof(fichier)) {
+    if (feof(fichier))
+    {
         printf("Fichier vide, rien a compresser\n");
         fclose(fopen(argv[2], "w"));
 
